@@ -1,4 +1,4 @@
-package com.translogistics;
+package com.translogistics.translogistics;
 
 import com.translogistics.translogistics.dto.PersonaDTO;
 import com.translogistics.translogistics.dto.RolAdministradorDTO;
@@ -42,7 +42,6 @@ class UsuarioServiceTest {
    
     @Test
     void testFindAllUsuarios() {
-        // Arrange
     Rol rolAdm = new RolAdministrador(1L, "ADMINISTRADOR");
     Rol rolConductor = new RolConductor(2L, "CONDUCTOR", "licencia", 2);
     Rol rolDespachador = new RolDespachador(3L, "DESPACHADOR");
@@ -67,16 +66,13 @@ class UsuarioServiceTest {
 
     List<UsuarioDTO> expected = Arrays.asList(usuarioDTO1, usuarioDTO2, usuarioDTO3);
 
-    // Configurar mocks
     Mockito.when(usuarioRepository.findAll()).thenReturn(usuarios);
     Mockito.when(usuarioMapper.toDTO(usuario1)).thenReturn(usuarioDTO1);
     Mockito.when(usuarioMapper.toDTO(usuario2)).thenReturn(usuarioDTO2);
     Mockito.when(usuarioMapper.toDTO(usuario3)).thenReturn(usuarioDTO3);
 
-    // Act
     List<UsuarioDTO> result = usuarioService.findAllUsuarios();
 
-    // Assert
     Assertions.assertEquals(expected.size(), result.size());
     Assertions.assertEquals(expected.get(0).getId(), result.get(0).getId());
     Assertions.assertEquals(expected.get(1).getId(), result.get(1).getId());

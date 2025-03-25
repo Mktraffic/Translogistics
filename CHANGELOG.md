@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [Unreleased]
+
+
+
+### 🐛 Bug Fixes
+
+
+- Corregir changelog (f7f20dc)
+
+- Ordenar clases (2f77d4e)
+
+
 ## [1.1.0] - 2025-03-25
 
 
