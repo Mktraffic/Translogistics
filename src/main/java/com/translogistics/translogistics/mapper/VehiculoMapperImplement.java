@@ -4,7 +4,7 @@ import com.translogistics.translogistics.dto.VehiculoDTO;
 import com.translogistics.translogistics.model.Vehiculo;
 import org.springframework.stereotype.Component;
 @Component
-public class VehiculoMapperImplement {
+public class VehiculoMapperImplement implements VehiculoMapper {
     
         @Override
         public VehiculoDTO toDTO(Vehiculo entity) {
