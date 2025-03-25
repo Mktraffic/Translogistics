@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 @Controller
 public class DispatcherController {
     @Autowired
@@ -31,51 +30,48 @@ public class DispatcherController {
     private RegistroViajeService registroViajeService;
 
     @PostMapping("/asignar")
-    public ResponseEntity<RegistroViajeDTO> procesarAsignacion(@ModelAttribute("vehiculoPlaca") String placaVehiculo,
-                                                               @ModelAttribute("conductorNombre") String nombreConductor) {
+    public String procesarAsignacion(
+            @ModelAttribute("vehiculo") String placaVehiculo,
+            @ModelAttribute("conductor") String nombreConductor,
+            Model model) {
 
-        ResponseEntity<VehiculoDTO> vehiculoResponse = vehiculoService.fetchVehiculoByPlaca(placaVehiculo);
-        if (vehiculoResponse.getStatusCode() == HttpStatus.NOT_FOUND) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        VehiculoDTO vehiculoDTO = vehiculoResponse.getBody();
+        String[] placa = placaVehiculo.trim().split("-");
 
-        // Buscar el conductor por nombre
-        List<UsuarioDTO> response = usuarioService.findAllUsuarios();
-        UsuarioDTO conductor = null;
-        for (UsuarioDTO usuarioDTO : response) {
-            String name = usuarioDTO.getPersona().getNombre() + " " + usuarioDTO.getPersona().getApellido();
-            if (nombreConductor.equals(name) && usuarioDTO.getRol().getNombreRol().equals("CONDUCTOR")) {
-                conductor = usuarioDTO;
-                break;
-            }
-        }
+        VehiculoDTO vehiculoResponse = vehiculoService.fetchVehiculoByPlaca(placa[0].trim());
+        List<UsuarioDTO> usuarios = usuarioService.findAllUsuarios();
 
-        if (conductor == null) {
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
+        UsuarioDTO conductor = usuarios.stream()
+                .filter(usuario -> {
+                    String fullName = usuario.getPersona().getNombre() + " " + usuario.getPersona().getApellido();
+                    return nombreConductor.equals(fullName) && usuario.getRol().getNombreRol().equals("CONDUCTOR");
+                })
+                .findFirst()
+                .orElse(null);
 
-        // Crear el registro de viaje
+
         RegistroViajeDTO registroViajeDTO = new RegistroViajeDTO();
         registroViajeDTO.setFechaViaje(LocalDate.now().format(DateTimeFormatter.ISO_DATE));
-        registroViajeDTO.setVehiculo(vehiculoDTO);
+        registroViajeDTO.setVehiculo(vehiculoResponse);
         registroViajeDTO.setConductor(conductor);
+        registroViajeService.addRegistroViaje(registroViajeDTO);
 
-        // Guardar el registro de viaje en la base de datos
-        RegistroViajeDTO savedRegistroViajeDTO = registroViajeService.addRegistroViaje(registroViajeDTO);
+        List<String> vehiculos = findAllPlatesVehicles();
+        List<String> conductores = findAllDrivers();
+        model.addAttribute("vehiculos", vehiculos);
+        model.addAttribute("conductores", conductores);
 
-        return new ResponseEntity<>(savedRegistroViajeDTO, HttpStatus.CREATED);
+        return "assignDriver";
     }
 
     @GetMapping("/dispatcher/asignarConductor")
     public String asignarConductor(Model model) {
-        model.addAttribute("vehiculos", findAllPlatesVehicles());
-        model.addAttribute("conductores", findAllDrivers());
+        List<String> vehiculos = findAllPlatesVehicles();
+        List<String> conductores = findAllDrivers();
+        model.addAttribute("vehiculos", vehiculos);
+        model.addAttribute("conductores", conductores);
         return "assignDriver";
     }
 
-
-    @GetMapping("/all/drivers")
     public List<String> findAllDrivers() {
         List<UsuarioDTO> usuarios = usuarioService.findAllUsuarios();
         List<String> drivers = new ArrayList<>();
@@ -87,7 +83,7 @@ public class DispatcherController {
         }
         return drivers;
     }
-    @GetMapping("/all/vehiculo")
+
     public List<String> findAllPlatesVehicles() {
         List<VehiculoDTO> vehiculos = vehiculoService.findAllVehiculos();
         List<String> plates = new ArrayList<>();
