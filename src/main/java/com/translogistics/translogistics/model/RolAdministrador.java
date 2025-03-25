@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("ADMINISTRADOR") // Valor que se guardará en la columna tipo_rol
+@DiscriminatorValue("ADMINISTRADOR")
 public class RolAdministrador extends Rol {
     public RolAdministrador(Long id, String nombreRol) {
         super(id, nombreRol);

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @NoArgsConstructor
-@DiscriminatorValue("DESPACHADOR") // Se identifica como un despachador
+@DiscriminatorValue("DESPACHADOR")
 public class RolDespachador extends Rol {
 
     public RolDespachador(Long id, String nombreRol) {

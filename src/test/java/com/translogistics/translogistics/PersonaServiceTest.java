@@ -85,7 +85,6 @@ class PersonaServiceTest {
 
     @Test
     void testFetchPersonaByIdFound() {
-          // Arrange
     Long id = 1L;
     Persona persona = new Persona(id, "juan", "perez");
     PersonaDTO personaDTO = new PersonaDTO(id, "juan", "perez");
@@ -95,7 +94,6 @@ class PersonaServiceTest {
 
     ResponseEntity<PersonaDTO> response = personaService.fetchPersonaById(id);
 
-    // Assert
     Assertions.assertEquals(HttpStatus.OK, response.getStatusCode());
     Assertions.assertNotNull(response.getBody());
     Assertions.assertEquals(personaDTO.getId(), response.getBody().getId());

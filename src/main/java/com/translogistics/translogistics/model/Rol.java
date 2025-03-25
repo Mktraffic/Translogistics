@@ -18,9 +18,9 @@ import lombok.NoArgsConstructor;
 
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)  // Usa JOINED para crear una tabla por cada subclase
-@Table(name = "rol")  // Crea una tabla "rol" para almacenar todos los roles
-@DiscriminatorColumn(name = "tipo_rol", discriminatorType = DiscriminatorType.STRING) // Diferencia los roles
+@Inheritance(strategy = InheritanceType.JOINED)
+@Table(name = "rol") 
+@DiscriminatorColumn(name = "tipo_rol", discriminatorType = DiscriminatorType.STRING)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor 

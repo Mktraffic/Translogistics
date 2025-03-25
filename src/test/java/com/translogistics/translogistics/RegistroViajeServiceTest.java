@@ -35,7 +35,6 @@ class RegistroViajeServiceTest {
 
     @Test
     void testFindAllRegistroViaje() {
-        // Arrange
         Vehiculo vehiculo1 = new Vehiculo("ABC123", "modelo",2020 ,"bus", "activo");
         Usuario conductor1 = new Usuario(1L, "user1", "password1", null, null);
         RegistroViaje registro1 = new RegistroViaje(1L, "2025-03-24", vehiculo1, conductor1);
@@ -70,7 +69,7 @@ class RegistroViajeServiceTest {
 
     @Test
     void testAddRegistroViaje() {
-        // Arrange
+
         Vehiculo vehiculo = new Vehiculo("ABC123", "modelo",2020 ,"bus", "activo");
         Usuario conductor = new Usuario(1L, "user1", "password1", null, null);
         RegistroViaje registro = new RegistroViaje(1L, "2025-03-24", vehiculo, conductor);
@@ -86,7 +85,6 @@ class RegistroViajeServiceTest {
     
         RegistroViajeDTO result = registroViajeService.addRegistroViaje(registroDTO);
 
-        // Assert
         Assertions.assertNotNull(result);
         Assertions.assertEquals(registroDTO.getId(), result.getId());
         Assertions.assertEquals(registroDTO.getFechaViaje(), result.getFechaViaje());

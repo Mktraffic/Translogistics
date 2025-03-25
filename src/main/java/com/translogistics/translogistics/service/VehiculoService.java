@@ -19,7 +19,6 @@ public class VehiculoService {
     @Autowired
     private VehiculoMapper vehiculoMapper;
 
-    // Obtener todos los vehículos
     public List<VehiculoDTO> findAllVehiculos() {
         List<Vehiculo> vehiculos = vehiculoRepository.findAll();
         return vehiculos.stream()
@@ -27,17 +26,15 @@ public class VehiculoService {
                 .collect(Collectors.toList());
     }
 
-    // Guardar un vehículo en la base de datos
     public VehiculoDTO addVehiculoInDB(VehiculoDTO vehiculoDTO) {
         Vehiculo vehiculoGuardado = vehiculoRepository.save(vehiculoMapper.toEntity(vehiculoDTO));
         return vehiculoMapper.toDTO(vehiculoGuardado);
     }
 
-    // Obtener vehículo por placa
     public VehiculoDTO fetchVehiculoByPlaca(String placa) {
         Optional<Vehiculo> vehiculo = vehiculoRepository.findById(placa);
         if (vehiculo.isEmpty()) {
-            return null; //  lanzar una excepción
+            return null; 
         }
         return vehiculoMapper.toDTO(vehiculo.get());
     }

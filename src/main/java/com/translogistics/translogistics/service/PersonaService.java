@@ -25,7 +25,6 @@ public class PersonaService {
     @Autowired
     private PersonaMapper personaMapper;
 
-    // Obtener todas las personas
     public List<PersonaDTO> findAllPersonas() {
         List<Persona> personas = personaRepository.findAll();
         return personas.stream()
@@ -33,13 +32,11 @@ public class PersonaService {
                 .collect(Collectors.toList());
     }
 
-    // Guardar una persona en la base de datos
     public PersonaDTO addPersonaInDB(PersonaDTO personaDTO) {
         Persona personaGuardada = personaRepository.save(personaMapper.toEntity(personaDTO));
         return personaMapper.toDTO(personaGuardada);
     }
 
-    // Obtener persona por ID
     public ResponseEntity<PersonaDTO> fetchPersonaById(Long id) {
         Optional<Persona> persona = personaRepository.findById(id);
         if (persona.isEmpty()) {

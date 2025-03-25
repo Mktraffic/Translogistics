@@ -8,9 +8,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@DiscriminatorValue("CONDUCTOR") // Se identifica como un conductor
+@DiscriminatorValue("CONDUCTOR")
 @Data
-@NoArgsConstructor //
+@NoArgsConstructor 
 public class RolConductor extends Rol {
     
     @Column(name = "licencia", length = 200)
