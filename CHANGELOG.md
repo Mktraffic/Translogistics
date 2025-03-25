@@ -1,6 +1,32 @@
 # Changelog
 
 
+## [1.1.0] - 2025-03-25
+
+
+
+### 🐛 Bug Fixes
+
+
+- Actualizar changelog (0494ca1)
+
+- Arreglar la carpeta almacenada (71a6b44)
+
+
+### 🧪 Testing
+
+
+- Agregar test de persona service y configuracion del pom para test (b2b8795)
+
+- Test RegistroViajeService (f1e0a9b)
+
+- Agregar RolServiceTest (d09a2cc)
+
+- Crear test VehiculoService (0a4a457)
+
+- Agregar test del usuario service (7001f02)
+
+
 ## [1.0.0] - 2025-03-25
 
 
