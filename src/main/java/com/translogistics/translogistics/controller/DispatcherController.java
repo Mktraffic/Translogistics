@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
 import com.translogistics.translogistics.dto.RegistroViajeDTO;
 import com.translogistics.translogistics.dto.UsuarioDTO;
 import com.translogistics.translogistics.dto.VehiculoDTO;
@@ -12,14 +11,11 @@ import com.translogistics.translogistics.service.RegistroViajeService;
 import com.translogistics.translogistics.service.UsuarioService;
 import com.translogistics.translogistics.service.VehiculoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 @Controller
 public class DispatcherController {
     @Autowired
