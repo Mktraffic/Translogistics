@@ -1,11 +1,8 @@
 package com.translogistics.translogistics.service;
 
 import java.util.List;
-//import java.util.Optional;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.http.HttpStatus;
-//import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.translogistics.translogistics.dto.RegistroViajeDTO;
 import com.translogistics.translogistics.mapper.RegistroViajeMapper;
@@ -29,6 +26,4 @@ public class RegistroViajeService {
         RegistroViaje savedRegistroViaje = registroViajeRepository.save(registroViajeMapper.toEntity(registroViajeDTO));
         return registroViajeMapper.toDTO(savedRegistroViaje);
     }
-
-    
 }

@@ -42,4 +42,3 @@ public class VehiculoService {
         return vehiculoMapper.toDTO(vehiculo.get());
     }
 }
-
