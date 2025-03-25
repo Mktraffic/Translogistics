@@ -16,6 +16,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+
+
+
 @Controller
 public class DispatcherController {
     @Autowired
@@ -31,9 +34,15 @@ public class DispatcherController {
             @ModelAttribute("conductor") String nombreConductor,
             Model model) {
 
+        System.out.println(placaVehiculo + " primer punto ");
+        System.out.println(nombreConductor + " segundo punto ");
+
         String[] placa = placaVehiculo.trim().split("-");
 
+        System.out.println(placa[0] + "Aca esta la placa ");
+
         VehiculoDTO vehiculoResponse = vehiculoService.fetchVehiculoByPlaca(placa[0].trim());
+        System.out.println(vehiculoResponse);
         List<UsuarioDTO> usuarios = usuarioService.findAllUsuarios();
 
         UsuarioDTO conductor = usuarios.stream()
@@ -43,6 +52,8 @@ public class DispatcherController {
                 })
                 .findFirst()
                 .orElse(null);
+
+        System.out.println(conductor);
 
         RegistroViajeDTO registroViajeDTO = new RegistroViajeDTO();
         registroViajeDTO.setFechaViaje(LocalDate.now().format(DateTimeFormatter.ISO_DATE));
@@ -54,6 +65,7 @@ public class DispatcherController {
         List<String> conductores = findAllDrivers();
         model.addAttribute("vehiculos", vehiculos);
         model.addAttribute("conductores", conductores);
+
         return "assignDriver";
     }
 
@@ -82,9 +94,7 @@ public class DispatcherController {
         List<VehiculoDTO> vehiculos = vehiculoService.findAllVehiculos();
         List<String> plates = new ArrayList<>();
         for (int i = 0; i < vehiculos.size(); i++) {
-            if(vehiculos.get(i).getEstado().equals("DISPONIBLE")){
-                plates.add(vehiculos.get(i).getPlaca() + " - " + vehiculos.get(i).getTipo());
-            }
+            plates.add(vehiculos.get(i).getPlaca() + " - " + vehiculos.get(i).getTipo());
         }
         return plates;
     }

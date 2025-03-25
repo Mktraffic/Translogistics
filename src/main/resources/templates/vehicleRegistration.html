@@ -60,53 +60,60 @@
 </head>
 
 <body>
-    <div class="vehicle-registration-container">
-        <div class="logo-header">
-            <h2>TRANSLOGISTICS</h2>
-        </div>
-
-        <div class="alert alert-info" role="alert">
-            <i class="fas fa-info-circle me-2"></i> Módulo de registro de vehiculos
-        </div>
-
-        <form th:action="@{/registroVehiculo}" th:object="${vehiculoDTO}" method="post">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Placa *</label>
-                    <input type="text" class="form-control" th:field="*{placa}" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Modelo *</label>
-                    <input type="text" class="form-control" th:field="*{modelo}" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Anio *</label>
-                    <input type="number" class="form-control" th:field="*{anio}" required min="1800" />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Tipo de vehiculo *</label>
-                    <select class="form-select" th:field="*{tipo}" required>
-                        <option value="" selected disabled>Seleccione un tipo de vehiculo</option>
-                        <option value="PASAJEROS">Transporte de pasajeros</option>
-                        <option value="CARGA">Transporte de carga</option>
-                    </select>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Estado del vehiculo *</label>
-                    <select class="form-select" th:field="*{estado}" required>
-                        <option value="" selected disabled>Seleccione el estado del vehiculo</option>
-                        <option value="DISPONIBLE">Disponible</option>
-                        <option value="ASIGNADO">Asignado</option>
-                    </select>
-                </div>
-            </div>
-
-            <div class="d-grid gap-2 mt-4">
-                <button type="submit" class="btn btn-primary">Registrar vehiculo</button>
-                <a th:href="@{/dashboard}" class="btn btn-outline-secondary">Menu principal</a>
-            </div>
-        </form>
+<div class="vehicle-registration-container">
+    <div class="logo-header">
+        <h2>TRANSLOGISTICS</h2>
     </div>
+
+    <div class="alert alert-info" role="alert">
+        <i class="fas fa-info-circle me-2"></i> Módulo de registro de vehiculos
+    </div>
+
+    <form th:action="@{/registroVehiculo}" th:object="${vehiculoDTO}" method="post">
+        <div th:if="${success}" class="alert alert-success">
+            <i class="fas fa-check-circle me-2"></i> <span th:text="${success}"></span>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger">
+            <i class="fas fa-exclamation-circle me-2"></i> <span th:text="${error}"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Placa *</label>
+                <input type="text" class="form-control" th:field="*{placa}" required />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Modelo *</label>
+                <input type="text" class="form-control" th:field="*{modelo}" required />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Anio *</label>
+                <input type="number" class="form-control" th:field="*{anio}" required min="1800" />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Tipo de vehiculo *</label>
+                <select class="form-select" th:field="*{tipo}" required>
+                    <option value="" selected disabled>Seleccione un tipo de vehiculo</option>
+                    <option value="PASAJEROS">Transporte de pasajeros</option>
+                    <option value="CARGA">Transporte de carga</option>
+                </select>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Estado del vehiculo *</label>
+                <select class="form-select" th:field="*{estado}" required>
+                    <option value="" selected disabled>Seleccione el estado del vehiculo</option>
+                    <option value="DISPONIBLE">Disponible</option>
+                    <option value="ASIGNADO">Asignado</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Registrar vehiculo</button>
+            <a th:href="@{/dashboard}" class="btn btn-outline-secondary">Menu principal</a>
+        </div>
+    </form>
+</div>
 </body>
 
 </html>

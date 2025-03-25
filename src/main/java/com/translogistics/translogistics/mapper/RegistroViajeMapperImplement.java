@@ -31,4 +31,5 @@ public class RegistroViajeMapperImplement implements RegistroViajeMapper {
         Usuario conductor = UsuarioMapper.toEntity(dto.getConductor());
         return new RegistroViaje(dto.getId(), dto.getFechaViaje(), vehiculo, conductor);
     }
+
 }

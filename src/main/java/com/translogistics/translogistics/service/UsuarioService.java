@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
-
 @Service
 public class UsuarioService {
 
@@ -45,6 +44,17 @@ public class UsuarioService {
             }
         }
         return reponse+","+userRol;
+    }
+    public boolean validateExistUserName(String userName) {
+        List<UsuarioDTO> userList = findAllUsuarios();
+        boolean reponse = false;
+        for (int i = 0; i < userList.size(); i++) {
+            if(userList.get(i).getUser_name().equals(userName)){
+                reponse=true;
+                break;
+            }
+        }
+        return reponse;
     }
 
 }

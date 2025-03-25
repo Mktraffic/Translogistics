@@ -122,43 +122,43 @@
 </head>
 
 <body>
-    <div class="container">
-        <div class="sidebar">
-            <div class="header">
-                <div class="logo">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2c3e50" stroke-width="2">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="M8 12h8"></path>
-                        <path d="M12 8v8"></path>
-                    </svg>
-                </div>
-                <span>TRANSLOGISTICS</span>
+<div class="container">
+    <div class="sidebar">
+        <div class="header">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#2c3e50" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M8 12h8"></path>
+                    <path d="M12 8v8"></path>
+                </svg>
             </div>
-            <div class="user-profile">
+            <span>TRANSLOGISTICS</span>
+        </div>
+        <div class="user-profile">
 
-                <div class="user-info">
-                    <div class="user-name" th:text="${session.usuario != null ? session.usuario : 'Invitado'}"></div>
-                    <div class="user-role" th:text="${session.rol != null ? session.rol : 'Sin rol'}"></div>
-                </div>
-                <div class="status-indicator"></div>
+            <div class="user-info">
+                <div class="user-name" th:text="${session.usuario != null ? session.usuario : 'Invitado'}"></div>
+                <div class="user-role" th:text="${session.rol != null ? session.rol : 'Sin rol'}"></div>
             </div>
-            <div class="modules-title">Módulos a gestionar</div>
-            <div class="module-item" th:classappend="${moduloActivo == 'asignarConductor'} ? 'active' : ''"
-                th:onclick="'window.location.href=\'' + @{/dispatcher/asignarConductor} + '\''">
-                <div class="module-icon"></div>
-                <span>Asignar conductor</span>
-            </div>
-            <form th:action="@{/logout}" method="post">
-                <button type="submit" class="logout-button">Cerrar sesión</button>
-            </form>
+            <div class="status-indicator"></div>
         </div>
-        <div class="main-content">
-            <h1 th:text="${session.usuario != null ? 'Bienvenido, ' + session.usuario : 'Bienvenido, Invitado'}">
-                Bienvenido, Usuario
-            </h1>
-            <p>Seleccione un modulo a gestionar</p>
+        <div class="modules-title">Módulos a gestionar</div>
+        <div class="module-item" th:classappend="${moduloActivo == 'asignarConductor'} ? 'active' : ''"
+             th:onclick="'window.location.href=\'' + @{/dispatcher/asignarConductor} + '\''">
+            <div class="module-icon"></div>
+            <span>Asignar conductor</span>
         </div>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="logout-button">Cerrar sesión</button>
+        </form>
     </div>
+    <div class="main-content">
+        <h1 th:text="${session.usuario != null ? 'Bienvenido, ' + session.usuario : 'Bienvenido, Invitado'}">
+            Bienvenido, Usuario
+        </h1>
+        <p>Seleccione un modulo a gestionar</p>
+    </div>
+</div>
 </body>
 
 </html>

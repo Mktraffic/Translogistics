@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,7 +17,7 @@
         .driver-registration-container {
             background-color: white;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 500px;
             padding: 30px;
@@ -57,6 +58,7 @@
         }
     </style>
 </head>
+
 <body>
 <div class="driver-registration-container">
     <div class="logo-header">
@@ -67,26 +69,33 @@
         <i class="fas fa-info-circle me-2"></i> Módulo de registro de conductores
     </div>
 
-    <form th:action="@{/registro/conductor}" th:object="${usuarioDTO}" method="post">
+    <form th:action="@{/registroConductor}" th:object="${usuarioRolConductorDTO}" method="post">
+        <div th:if="${success}" class="alert alert-success">
+            <i class="fas fa-check-circle me-2"></i> <span th:text="${success}"></span>
+        </div>
+
+        <div th:if="${error}" class="alert alert-danger">
+            <i class="fas fa-exclamation-circle me-2"></i> <span th:text="${error}"></span>
+        </div>
         <div class="row">
             <div class="col-md-6 mb-3">
                 <label class="form-label">Nombre *</label>
-                <input type="text" class="form-control" th:field="*{persona.nombre}" required />
+                <input type="text" class="form-control" th:field="*{usuarioDTO.persona.nombre}" required />
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label">Apellido *</label>
-                <input type="text" class="form-control" th:field="*{persona.apellido}" required />
+                <input type="text" class="form-control" th:field="*{usuarioDTO.persona.apellido}" required />
             </div>
         </div>
 
         <div class="mb-3">
             <label class="form-label">Documento de Identidad *</label>
-            <input type="text" class="form-control" th:field="*{persona.id}" required />
+            <input type="number" class="form-control" th:field="*{usuarioDTO.persona.id}" required min="1"
+                   max="9999999999" />
         </div>
-
         <div class="mb-3">
             <label class="form-label">Tipo de licencia *</label>
-            <select class="form-select" th:field="*{rol.licencia}" required>
+            <select class="form-select" th:field="*{conductorDTO.licencia}" required>
                 <option value="" selected disabled>Seleccione un tipo de licencia</option>
                 <option value="A1">A1 - Motocicletas hasta 125 c.c</option>
                 <option value="A2">A2 - Motocicletas de más de 125 c.c.</option>
@@ -101,9 +110,8 @@
 
         <div class="mb-3">
             <label class="form-label">Años de experiencia *</label>
-            <input type="number" class="form-control" th:field="*{rol.experiencia}" required />
+            <input type="number" class="form-control" th:field="*{conductorDTO.experiencia}" required />
         </div>
-
         <hr class="my-4">
         <h6>Datos de acceso al sistema</h6>
 
@@ -112,23 +120,24 @@
                 <label class="form-label">Usuario *</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-user"></i></span>
-                    <input type="text" class="form-control" th:field="*{user_name}" required />
+                    <input type="text" class="form-control" th:field="*{usuarioDTO.user_name}" required />
                 </div>
             </div>
             <div class="col-md-6 mb-3">
                 <label class="form-label">Contraseña *</label>
                 <div class="input-group">
                     <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                    <input type="password" class="form-control" th:field="*{user_password}" required />
+                    <input type="password" class="form-control" th:field="*{usuarioDTO.user_password}" required />
                 </div>
             </div>
         </div>
 
         <div class="d-grid gap-2 mt-4">
             <button type="submit" class="btn btn-primary">Registrar Conductor</button>
-            <a th:href="@{/dashboard}">Menu principal</a>
+            <a th:href="@{/dashboard}" class="btn btn-outline-secondary">Menu principal</a>
         </div>
     </form>
 </div>
 </body>
+
 </html>

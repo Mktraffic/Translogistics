@@ -33,6 +33,6 @@ public class RegistroViaje {
 
     @OneToOne
     @JoinColumn(name = "id_conductor", unique = true, nullable = false)
-    private Usuario conductor; 
+    private Usuario conductor;
 
 }

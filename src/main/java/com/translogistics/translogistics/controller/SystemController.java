@@ -19,6 +19,8 @@ import com.translogistics.translogistics.service.RolService;
 import com.translogistics.translogistics.service.UsuarioService;
 
 import jakarta.servlet.http.HttpSession;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class SystemController {
@@ -34,64 +36,101 @@ public class SystemController {
 
     @PostMapping("/registro/administrador")
     public String registerAdmin(@ModelAttribute UsuarioDTO administrador, Model model) {
-        PersonaDTO persona = new PersonaDTO(
-                administrador.getPersona().getId(),
-                administrador.getPersona().getNombre(),
-                administrador.getPersona().getApellido());
-
-        PersonaDTO nuevaPersona = personaService.addPersonaInDB(persona);
-        RolAdministradorDTO rolAdministradorDTO;
-        if (administrador.getRol() instanceof RolAdministradorDTO) {
-            rolAdministradorDTO = (RolAdministradorDTO) administrador.getRol();
-        } else {
-            rolAdministradorDTO = new RolAdministradorDTO();
-            rolAdministradorDTO.setNombreRol("ADMINISTRADOR");
+        if (personaService.findById(administrador.getPersona().getId()).isPresent()) {
+            model.addAttribute("error", "El documento de identidad ya está registrado.");
+            model.addAttribute("usuarioDTO", administrador);
+            return "adminRegistration";
         }
+        if (usuarioService.validateExistUserName(administrador.getUser_name())) {
+            model.addAttribute("error", "El nombre de usuario ya esta registrado.");
+            model.addAttribute("usuarioDTO", administrador);
+            return "adminRegistration";
+        }
+        try {
+            PersonaDTO persona = new PersonaDTO(
+                    administrador.getPersona().getId(),
+                    administrador.getPersona().getNombre(),
+                    administrador.getPersona().getApellido());
 
-        RolAdministrador nuevoRol = new RolAdministrador(
-                rolAdministradorDTO.getId(),
-                rolAdministradorDTO.getNombreRol());
+            PersonaDTO nuevaPersona = personaService.addPersonaInDB(persona);
+            RolAdministradorDTO rolAdministradorDTO;
+            if (administrador.getRol() instanceof RolAdministradorDTO) {
+                rolAdministradorDTO = (RolAdministradorDTO) administrador.getRol();
+            } else {
+                rolAdministradorDTO = new RolAdministradorDTO();
+                rolAdministradorDTO.setNombreRol("ADMINISTRADOR");
+            }
 
-        RolAdministrador rolGuardado = rolService.guardarRolAdministrador(nuevoRol);
+            RolAdministrador nuevoRol = new RolAdministrador(
+                    rolAdministradorDTO.getId(),
+                    rolAdministradorDTO.getNombreRol());
 
-        administrador.setPersona(nuevaPersona);
-        administrador.setRol(new RolAdministradorDTO(rolGuardado.getId(), rolGuardado.getNombreRol()));
+            RolAdministrador rolGuardado = rolService.guardarRolAdministrador(nuevoRol);
 
-        usuarioService.addUsuarioInDB(administrador);
-        model.addAttribute("mensaje", "Administrador registrado correctamente.");
-        model.addAttribute("usuarioDTO", new UsuarioDTO());
+            administrador.setPersona(nuevaPersona);
+            administrador.setRol(new RolAdministradorDTO(rolGuardado.getId(), rolGuardado.getNombreRol()));
 
-        return "adminRegistration";
+            usuarioService.addUsuarioInDB(administrador);
+            model.addAttribute("success", "Administrador registrado correctamente.");
+            model.addAttribute("usuarioDTO", new UsuarioDTO());
+            return "redirect:/";
+        } catch (Exception e) {
+            model.addAttribute("error", "Ocurrió un error inesperado. Inténtalo de nuevo.");
+            model.addAttribute("usuarioDTO", administrador);
+            return "adminRegistration";
+        }
     }
 
     @PostMapping("/loggeo")
-    public String procesarLogin(@ModelAttribute UsuarioDTO usuarioDTO, Model model,HttpSession session) {
-        String []data = usuarioService.validateUserByUserName(usuarioDTO.getUser_name(), usuarioDTO.getUser_password()).split(",");
-        boolean isAuthenticated = Boolean.parseBoolean(data[0]);
-        if (isAuthenticated) {
+    public String procesarLogin(@ModelAttribute UsuarioDTO usuarioDTO, Model model, HttpSession session) {
+        try {
+            String[] data = usuarioService
+                    .validateUserByUserName(usuarioDTO.getUser_name(), usuarioDTO.getUser_password())
+                    .split(",");
+            boolean isAuthenticated = Boolean.parseBoolean(data[0].trim());
+            if (!isAuthenticated) {
+                String errorCode = data.length > 1 ? data[1].trim() : "UNKNOWN_ERROR";
+                String mensajeError = "";
+                switch (errorCode) {
+                    case "USER_NOT_FOUND":
+                        mensajeError = "El usuario no existe.";
+                        break;
+                    case "WRONG_PASSWORD":
+                        mensajeError = "Contraseña incorrecta.";
+                        break;
+                    default:
+                        mensajeError = "Credenciales incorrectas.";
+                        break;
+                }
+
+                model.addAttribute("error", mensajeError);
+                return "userLogging";
+            }
             String rol = data[1];
             session.setAttribute("usuario", searchPersonByUserName(usuarioDTO.getUser_name()));
-            session.setAttribute("rol",rol);
-            switch (rol.toUpperCase()) {
+            session.setAttribute("rol", rol);
+            switch (rol) {
                 case "ADMINISTRADOR":
                     return "administratorOptions";
                 case "DESPACHADOR":
                     return "dispatcherOptions";
                 case "CONDUCTOR":
                     model.addAttribute("error", "Sin acceso al sistema");
-                    break;
+                    return "userLogging";
             }
+        } catch (Exception e) {
+            model.addAttribute("error", "Ocurrió un error inesperado. Inténtalo de nuevo.");
+            return "userLogging";
         }
-
-        model.addAttribute("error", "Credenciales incorrectas");
-        return "/login";
+        return null;
     }
-    public String searchPersonByUserName(String user_name){
+
+    public String searchPersonByUserName(String user_name) {
         List<UsuarioDTO> userList = usuarioService.findAllUsuarios();
-        String nombre="";
-        for(int i=0;i<userList.size();i++){
-            if(userList.get(i).getUser_name().equals(user_name)){
-                nombre =userList.get(i).getPersona().getNombre()+" "+userList.get(i).getPersona().getApellido();
+        String nombre = "";
+        for (int i = 0; i < userList.size(); i++) {
+            if (userList.get(i).getUser_name().equals(user_name)) {
+                nombre = userList.get(i).getPersona().getNombre() + " " + userList.get(i).getPersona().getApellido();
             }
         }
         return nombre;
@@ -99,8 +138,16 @@ public class SystemController {
     // Navegación entre vistas
 
     @GetMapping("/")
-    public String mostrarFormularioAdmin(Model model) {
+    public String mostrarFormularioAdmin(Model model,
+                                         @RequestParam(value = "success", required = false) String success,
+                                         @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("usuarioDTO", new UsuarioDTO());
+        if (success != null) {
+            model.addAttribute("mensajeExito", success);
+        }
+        if (error != null) {
+            model.addAttribute("mensajeError", error);
+        }
         return "adminRegistration";
     }
 
@@ -134,26 +181,59 @@ public class SystemController {
     }
 
     @GetMapping("/login")
-    public String mostrarLogin(Model model) {
+    public String mostrarLogin(Model model,
+                               @RequestParam(value = "success", required = false) String success,
+                               @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("usuarioDTO", new UsuarioDTO());
+        if (success != null) {
+            model.addAttribute("mensajeExito", success);
+        }
+        if (error != null) {
+            model.addAttribute("mensajeError", error);
+        }
         return "userLogging";
     }
 
     @GetMapping("/admin/registrarDespachador")
-    public String mostrarFormularioDespachador(Model model) {
+    public String mostrarFormularioDespachador(Model model,
+                                               @RequestParam(value = "success", required = false) String success,
+                                               @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("usuarioDTO", new UsuarioDTO());
+
+        if (success != null) {
+            model.addAttribute("mensajeExito", success);
+        }
+        if (error != null) {
+            model.addAttribute("mensajeError", error);
+        }
         return "dispatcherRegistration";
     }
 
     @GetMapping("/admin/registrarVehiculo")
-    public String mostrarRegistroVehiculo(Model model) {
+    public String mostrarRegistroVehiculo(Model model,
+                                          @RequestParam(value = "success", required = false) String success,
+                                          @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("vehiculoDTO", new VehiculoDTO());
+        if (success != null) {
+            model.addAttribute("mensajeExito", success);
+        }
+        if (error != null) {
+            model.addAttribute("mensajeError", error);
+        }
         return "vehicleRegistration";
     }
 
     @GetMapping("/admin/registrarConductor")
-    public String mostrarRegistroConductor(Model model) {
+    public String mostrarRegistroConductor(Model model,
+                                           @RequestParam(value = "success", required = false) String success,
+                                           @RequestParam(value = "error", required = false) String error) {
         model.addAttribute("usuarioRolConductorDTO", new UsuarioRolConductorDTO());
+        if (success != null) {
+            model.addAttribute("mensajeExito", success);
+        }
+        if (error != null) {
+            model.addAttribute("mensajeError", error);
+        }
         return "driverRegistration";
     }
 

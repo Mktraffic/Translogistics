@@ -9,6 +9,7 @@ import com.translogistics.translogistics.mapper.RegistroViajeMapper;
 import com.translogistics.translogistics.model.RegistroViaje;
 import com.translogistics.translogistics.repository.RegistroViajeRepository;
 
+
 @Service
 public class RegistroViajeService {
 
@@ -26,4 +27,6 @@ public class RegistroViajeService {
         RegistroViaje savedRegistroViaje = registroViajeRepository.save(registroViajeMapper.toEntity(registroViajeDTO));
         return registroViajeMapper.toDTO(savedRegistroViaje);
     }
+
+
 }

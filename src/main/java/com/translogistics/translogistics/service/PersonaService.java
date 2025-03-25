@@ -45,4 +45,8 @@ public class PersonaService {
         return new ResponseEntity<>(personaMapper.toDTO(persona.get()), HttpStatus.OK);
     }
 
+    public Optional<PersonaDTO> findById(Long id) {
+        return personaRepository.findById(id).map(persona -> new PersonaDTO(persona.getId(), persona.getNombre(), persona.getApellido()));
+    }
+
 }

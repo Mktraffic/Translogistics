@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,64 +9,65 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     :root {
-        --primary-color: #1b3e5c;
-        --accent-color: #37a97e;
-        --light-bg: #f8f9fa;
+      --primary-color: #1b3e5c;
+      --accent-color: #37a97e;
+      --light-bg: #f8f9fa;
     }
 
     body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        background-color: var(--light-bg);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-        margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--light-bg);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
 
     .registration-container {
-        background-color: white;
-        border-radius: 10px;
-        box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        width: 100%;
-        max-width: 500px;
-        padding: 30px;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 500px;
+      padding: 30px;
     }
 
     .logo-header {
-        text-align: center;
-        margin-bottom: 30px;
-        color: var(--primary-color);
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary-color);
     }
 
     .logo-icon {
-        font-size: 3rem;
-        margin-bottom: 10px;
+      font-size: 3rem;
+      margin-bottom: 10px;
     }
 
     .btn-primary {
-        background-color: var(--accent-color);
-        border-color: var(--accent-color);
-        width: 100%;
-        padding: 10px;
-        font-weight: 500;
+      background-color: var(--accent-color);
+      border-color: var(--accent-color);
+      width: 100%;
+      padding: 10px;
+      font-weight: 500;
     }
 
     .btn-primary:hover {
-        background-color: #2d8e69;
-        border-color: #2d8e69;
+      background-color: #2d8e69;
+      border-color: #2d8e69;
     }
 
     .form-label {
-        font-weight: 500;
-        color: #555;
+      font-weight: 500;
+      color: #555;
     }
 
     .alert {
-        margin-bottom: 20px;
+      margin-bottom: 20px;
     }
   </style>
 </head>
+
 <body>
 <div class="registration-container">
   <div class="logo-header">
@@ -77,6 +79,14 @@
   </div>
 
   <form th:action="@{/registro/Despachador}" th:object="${usuarioDTO}" method="post">
+
+    <div th:if="${success}" class="alert alert-success">
+      <i class="fas fa-check-circle me-2"></i> <span th:text="${success}"></span>
+    </div>
+
+    <div th:if="${error}" class="alert alert-danger">
+      <i class="fas fa-exclamation-circle me-2"></i> <span th:text="${error}"></span>
+    </div>
     <div class="row">
       <div class="col-md-6 mb-3">
         <label class="form-label">Nombre *</label>
@@ -90,7 +100,7 @@
 
     <div class="mb-3">
       <label class="form-label">Documento de Identidad *</label>
-      <input type="text" class="form-control" th:field="*{persona.id}" required />
+      <input type="number" class="form-control" th:field="*{persona.id}" required min="1" max="9999999999" />
     </div>
 
     <hr class="my-4">
@@ -108,7 +118,7 @@
         <label class="form-label">Contrasenia *</label>
         <div class="input-group">
           <span class="input-group-text"><i class="fas fa-lock"></i></span>
-          <input type="password" class="form-control" th:field="*{user_password}" required />
+          <input type="password" class="form-control" th:field="*{user_password}" required min="8" max="99" />
         </div>
       </div>
     </div>
@@ -116,9 +126,10 @@
 
     <div class="d-grid gap-2 mt-4">
       <button type="submit" class="btn btn-primary">Registrar Despachador</button>
-      <a th:href="@{/dashboard}">Menu principal</a>
+      <a th:href="@{/dashboard}" class="btn btn-outline-secondary">Menu principal</a>
     </div>
   </form>
 </div>
 </body>
+
 </html>
