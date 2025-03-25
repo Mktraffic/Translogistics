@@ -1,4 +1,4 @@
-package com.translogistics;
+package com.translogistics.translogistics;
 
 import com.translogistics.translogistics.dto.RegistroViajeDTO;
 import com.translogistics.translogistics.dto.UsuarioDTO;
