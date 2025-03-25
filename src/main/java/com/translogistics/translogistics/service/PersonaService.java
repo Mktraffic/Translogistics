@@ -1,17 +1,21 @@
 package com.translogistics.translogistics.service;
 
-import com.translogistics.translogistics.dto.PersonaDTO;
-import com.translogistics.translogistics.mapper.PersonaMapper;
-import com.translogistics.translogistics.model.Persona;
-import com.translogistics.translogistics.repository.PersonaRepository;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import com.translogistics.translogistics.dto.PersonaDTO;
+import com.translogistics.translogistics.mapper.PersonaMapper;
+import com.translogistics.translogistics.model.Persona;
+import com.translogistics.translogistics.repository.PersonaRepository;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
 @Service
 public class PersonaService {
 
@@ -45,4 +49,3 @@ public class PersonaService {
     }
 
 }
-
