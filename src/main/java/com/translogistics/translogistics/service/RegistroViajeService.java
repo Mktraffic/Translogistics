@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 //import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.translogistics.translogistics.dto.RegistroViajeDTO;
+import com.translogistics.translogistics.mapper.RegistroViajeMapper;
 import com.translogistics.translogistics.model.RegistroViaje;
 import com.translogistics.translogistics.repository.RegistroViajeRepository;
 
