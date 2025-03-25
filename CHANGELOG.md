@@ -1,7 +1,7 @@
 # Changelog
 
 
-## [Unreleased]
+## [1.0.0] - 2025-03-25
 
 
 
@@ -75,6 +75,8 @@
 - DispatcherController (29fc1fb)
 
 - Agregar SystemController a carpeta controller (e8a8cd7)
+
+- Agregar archivo Changelog (6c8a469)
 
 
 ## [0.1.0] - 2025-03-25
