@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -27,7 +26,7 @@
         .person-registration-container {
             background-color: white;
             border-radius: 10px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
             width: 100%;
             max-width: 500px;
             padding: 30px;
@@ -67,56 +66,53 @@
         }
     </style>
 </head>
-
 <body>
-    <div class="person-registration-container">
-        <div class="logo-header">
-            <div class="logo-icon">🚍</div>
-            <h2>TRANSLOGISTICS</h2>
-        </div>
-
-        <div class="alert alert-info" role="alert">
-            <i class="fas fa-info-circle me-2"></i> Modulo de registro de administradores
-        </div>
-
-        <form th:action="@{/registro/administrador}" th:object="${usuarioDTO}" method="post">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Nombre *</label>
-                    <input type="text" class="form-control" th:field="*{persona.nombre}" required />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Apellido *</label>
-                    <input type="text" class="form-control" th:field="*{persona.apellido}" required />
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Documento de Identidad *</label>
-                    <input type="number" class="form-control" th:field="*{persona.id}" required min="1"
-                        max="9999999999" />
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Usuario *</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-user"></i></span>
-                        <input type="text" class="form-control" th:field="*{user_name}" required />
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Contraseña *</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="fas fa-lock"></i></span>
-                        <input type="password" class="form-control" th:field="*{user_password}" required />
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="d-grid gap-2 mt-4">
-                <button type="submit" class="btn btn-primary">Registrar Administrador</button>
-                <a th:href="@{/login}" class="btn btn-outline-secondary">Ya tiene una cuenta</a>
-            </div>
-        </form>
+<div class="person-registration-container">
+    <div class="logo-header">
+        <div class="logo-icon">🚍</div>
+        <h2>TRANSLOGISTICS</h2>
     </div>
-</body>
 
+    <div class="alert alert-info" role="alert">
+        <i class="fas fa-info-circle me-2"></i> Modulo de registro de administradores
+    </div>
+
+    <form th:action="@{/registro/administrador}" th:object="${usuarioDTO}" method="post">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Nombre *</label>
+                <input type="text" class="form-control" th:field="*{persona.nombre}" required />
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Apellido *</label>
+                <input type="text" class="form-control" th:field="*{persona.apellido}" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Documento de Identidad *</label>
+                <input type="number" class="form-control" th:field="*{persona.id}" required min="1" max="9999999999"/>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Usuario *</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                    <input type="text" class="form-control" th:field="*{user_name}" required />
+                </div>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Contraseña *</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                    <input type="password" class="form-control" th:field="*{user_password}" required />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-primary">Registrar Administrador</button>
+            <a th:href="@{/login}" class="btn btn-outline-secondary">Ya tiene una cuenta</a>
+        </div>
+    </form>
+</div>
+</body>
 </html>
